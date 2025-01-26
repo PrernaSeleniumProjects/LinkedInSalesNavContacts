@@ -7,24 +7,27 @@ import com.prerna.automation.selenium.linkedin.base.BasePage;
 
 public class SalesNavPage extends BasePage {
 
-    // Locator for the Sales Navigator link (already defined in the previous code)
-    private By salesNavLink = By.id("mynav-sales");
+	// Locator for the Sales Navigator link (already defined in the previous code)
+	// nav-small-sales-navigator-icon
 
-    // Locator for the Leads menu link (new)
-    private By leadsMenuLink = By.xpath("//span[text()='Leads']");
+	private By salesNavLink = By.xpath("//li-icon[@type='nav-small-sales-navigator-icon']");
+	// private By salesNavLink = By.xpath("//span[text()='Leads']");//
+	// By.id("mynav-sales");
 
-    public SalesNavPage(WebDriver driver) {
-        super(driver);
-    }
+	// Locator for the Leads menu link (new)
+	private By leadsMenuLink = By.xpath("//a[@href='/sales/lists/people']");//By.xpath("//a[text()='Leads']");
 
-    // Method to navigate to Sales Navigator
-    public void goToSalesNavigator() {
-        clickElement(salesNavLink);
-    }
+	public SalesNavPage(WebDriver driver) {
+		super(driver);
+	}
 
-    // Method to navigate to Leads page
-    public void goToLeadsPage() {
-        clickElement(leadsMenuLink);
-    }
+	// Method to navigate to Sales Navigator
+	public void goToSalesNavigator() {
+		clickElement(salesNavLink);
+	}
+
+	// Method to navigate to Leads page
+	public void goToLeadsPage() {
+		clickElement(leadsMenuLink);
+	}
 }
-

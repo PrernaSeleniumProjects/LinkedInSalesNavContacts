@@ -2,6 +2,8 @@ package com.prerna.automation.selenium.linkedin.test;
 
 
 
+import java.util.Set;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -54,16 +56,65 @@ public class LinkedInTest {
             loginPage.login(username, password);
             
             // Step 2: Navigate to Sales Navigator
+            
+            System.out.println("Step: loggged in");
+            
+            try {
+            	Thread.sleep(5000);
+            } catch(Exception ex) {
+            	
+            }
+            
+            String mainWindowHandle = driver.getWindowHandle();
             salesNavPage.goToSalesNavigator();
+            
+            System.out.println("Step: sales navigator");
+            
+            try {
+            	Thread.sleep(5000);
+            } catch(Exception ex) {
+            	
+            }
+            
+            
+            Set<String> windowHandles = driver.getWindowHandles();
+            
+            // Switch to the new tab
+            for (String handle : windowHandles) {
+                if (!handle.equals(mainWindowHandle)) {
+                    driver.switchTo().window(handle);  // Switch to new tab
+                    break;
+                }
+            }
+            
+            System.out.println("Step: closing notification");
             
             // Step 3: Close any notifications
             notificationPage.closeNotificationBar();
             
+            try {
+            	Thread.sleep(5000);
+            } catch(Exception ex) {
+            	
+            }
+            
+            System.out.println("Step: going to leads");
+            
             // Step 4: Go to Leads page
             salesNavPage.goToLeadsPage();
             
+            try {
+            	Thread.sleep(5000);
+            } catch(Exception ex) {
+            	
+            }
+            
+            System.out.println("Step: leads opened");
+            
             // Step 5: Print lead information
             leadsPage.printLeadInfo();
+            
+            System.out.println("Step: done................");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,6 +134,6 @@ public class LinkedInTest {
         linkedInTest.runTest("sourav@pipra.solutions", "Sour@v91097");
         
         // Close the browser after the test
-        linkedInTest.closeBrowser();
+       // linkedInTest.closeBrowser();
     }
 }

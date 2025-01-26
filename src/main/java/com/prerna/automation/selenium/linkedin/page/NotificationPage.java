@@ -9,7 +9,7 @@ import com.prerna.automation.selenium.linkedin.base.BasePage;
 
 public class NotificationPage extends BasePage {
 
-    private By notificationDismissButton = By.xpath("//button[@aria-label='Dismiss']");
+    private By notificationDismissButton = By.id("ember5"); //By.xpath("//button[@aria-label='Dismiss']");
 
     public NotificationPage(WebDriver driver) {
         super(driver);
