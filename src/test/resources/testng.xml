@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="LinkedInAutomationSuite">
+    <test name="LinkedInTest">
+        <classes>
+            <class name="com.linkedin.automation.LinkedInTest"/>
+        </classes>
+    </test>
+</suite>
