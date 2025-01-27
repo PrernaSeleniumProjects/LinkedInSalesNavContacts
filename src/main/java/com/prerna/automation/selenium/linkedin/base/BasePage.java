@@ -3,6 +3,7 @@ package com.prerna.automation.selenium.linkedin.base;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -43,5 +44,23 @@ public class BasePage {
 	public String getElementText(By locator) {
 		WebElement element = waitForElementVisible(locator);
 		return element.getText();
+	}
+
+	public boolean isElementExists(WebElement parentElement, By locator) {
+		try {
+			parentElement.findElement(locator);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	public String getElementTextIfExists(WebElement parentElement, By locator) {
+		try {
+			WebElement element = parentElement.findElement(locator);
+			return element.getText();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 }
