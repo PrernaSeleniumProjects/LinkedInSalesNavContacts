@@ -31,52 +31,98 @@ public class Person {
 		if (!phoneNumbers.contains(phoneNumber))
 			phoneNumbers.add(phoneNumber);
 	}
-	
+
 	public void addHandsetPhoneNumber(String phoneNumber) {
 		if (!handsetPhoneNumbers.contains(phoneNumber))
 			handsetPhoneNumbers.add(phoneNumber);
 	}
-	
+
 	public void addLink(String link) {
 		if (!links.contains(link))
 			links.add(link);
 	}
-	
+
 	public void addTwitter(String twitter) {
 		if (!twitters.contains(twitter))
 			twitters.add(twitter);
 	}
-	
+
 	public void addEmail(String email) {
 		if (!emails.contains(email))
 			emails.add(email);
 	}
-	//result = ;
-	
+	// result = ;
+
+	public String getCellValue(int colIndex) {
+		String result = "";
+
+		switch (colIndex) {
+		case 0:
+			return personName;
+		case 1:
+			return jobTitle;
+		case 2:
+			return companyName;
+		case 3:
+			return location;
+		case 4:
+			result = "";
+			for (String str : phoneNumbers) {
+				result = result + str + ",";
+			}
+			return result;
+		case 5:
+			result = "";
+			for (String str : handsetPhoneNumbers) {
+				result = result + str + ",";
+			}
+			return result;
+		case 6:
+			result = "";
+			for (String str : links) {
+				result = result + str + ",";
+			}
+			return result;
+		case 7:
+			result = "";
+			for (String str : twitters) {
+				result = result + str + ",";
+			}
+			return result;
+		case 8:
+			result = "";
+			for (String str : emails) {
+				result = result + str + ",";
+			}
+			return result;
+		default:
+			return "NO DATA";
+		}
+	}
+
 	public String csvString() {
 		String result = "";
 		result = result + "\"" + personName + "\"" + ",";
 		result = result + "\"" + jobTitle + "\"" + ",";
 		result = result + "\"" + companyName + "\"" + ",";
 		result = result + "\"" + location + "\"" + ",";
-		
-		for(String str: phoneNumbers) {
+
+		for (String str : phoneNumbers) {
 			result = result + "\"" + str + "\"" + ",";
 		}
-		
-		for(String str: links) {
+
+		for (String str : links) {
 			result = result + "\"" + str + "\"" + ",";
 		}
-		
-		for(String str: twitters) {
+
+		for (String str : twitters) {
 			result = result + "\"" + str + "\"" + ",";
 		}
-		
-		for(String str: emails) {
+
+		for (String str : emails) {
 			result = result + "\"" + str + "\"" + ",";
 		}
-		
-		
+
 		return result;
 	}
 }

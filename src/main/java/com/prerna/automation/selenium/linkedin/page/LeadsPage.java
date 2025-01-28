@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.prerna.automation.selenium.linkedin.base.BasePage;
 import com.prerna.automation.selenium.linkedin.bean.Person;
 import com.prerna.automation.selenium.linkedin.util.AppendToFile;
+import com.prerna.automation.selenium.linkedin.util.Excel;
+import com.prerna.automation.selenium.linkedin.util.GeneralUtil;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class LeadsPage extends BasePage {
 		List<WebElement> anchors = driver.findElements(leadsTable);
 
 		int anchorListSize = anchors.size();
+		
+		Excel excel = new Excel();
 
 		for (int i = 0; i < anchorListSize; i++) {
 
@@ -45,6 +49,8 @@ public class LeadsPage extends BasePage {
 			WebElement fileNameElement = anchor.findElement(By.xpath(".//div[1]"));
 
 			String fileName = fileNameElement.getText();
+			
+			excel.createSheet(fileName.substring(0, 28));
 
 			AppendToFile.appendLineToFile("D:\\Temp\\Files\\" + fileName + ".csv",
 					"Name,Job Title,Company Name,Location,Phone,Website,Social,Emails");
@@ -52,6 +58,7 @@ public class LeadsPage extends BasePage {
 			clickWebElement(anchor);
 
 			boolean isNextButtonEnabled = true;
+			ArrayList<Person> personList = new ArrayList();
 
 			while (isNextButtonEnabled) {
 
@@ -63,6 +70,8 @@ public class LeadsPage extends BasePage {
 
 				List<WebElement> rows = driver
 						.findElements(By.xpath("//tr[contains(@class, 'artdeco-models-table-row')]"));
+				
+				
 
 				for (WebElement row : rows) {
 					// String rowNum = row.getAttribute("data-x--people-list--row");
@@ -71,6 +80,8 @@ public class LeadsPage extends BasePage {
 					WebElement aNameElement = row.findElement(By.xpath(".//a[@data-anonymize='person-name']"));
 
 					Person person = new Person();
+					personList.add(person);
+					
 					person.setPersonName(getElementTextIfExists(row,
 							By.xpath(".//span[@class='_lead-detail-entity-details_ocf42k']")));
 					person.setJobTitle(getElementTextIfExists(row, By.xpath(".//div[@data-anonymize='job-title']")));
@@ -150,10 +161,15 @@ public class LeadsPage extends BasePage {
 				}
 
 			}
+			
+			excel.createSheetData(personList);
+			
 
 			WebElement backToLeadListsElement = driver.findElement(By.xpath("//a[@href='/sales/lists/people']"));
 			clickWebElement(backToLeadListsElement);
 		}
+		
+		excel.saveExcel(GeneralUtil.generateFileName());
 
 	}
 
