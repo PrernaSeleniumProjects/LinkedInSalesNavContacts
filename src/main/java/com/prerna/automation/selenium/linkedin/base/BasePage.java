@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.prerna.automation.selenium.linkedin.util.GeneralUtil;
+
 public class BasePage {
 	protected WebDriver driver;
 	protected WebDriverWait wait;
@@ -62,5 +64,13 @@ public class BasePage {
 		} catch (NoSuchElementException e) {
 			return null;
 		}
+	}
+
+	public void clickWebElement(WebElement webElement) {
+		try {
+			Thread.sleep(GeneralUtil.generateRandom(1000, 5000));
+		} catch (Exception ex) {
+		}
+		webElement.click();
 	}
 }

@@ -10,6 +10,9 @@ import com.prerna.automation.selenium.linkedin.base.BasePage;
 public class NotificationPage extends BasePage {
 
     private By notificationDismissButton = By.id("ember5"); //By.xpath("//button[@aria-label='Dismiss']");
+    
+    private By notificationPanel = By.xpath("//div[@data-sn-view-name='subpage-notifications-panel']"); //By.xpath("//button[@aria-label='Dismiss']");
+   
 
     public NotificationPage(WebDriver driver) {
         super(driver);
@@ -17,14 +20,18 @@ public class NotificationPage extends BasePage {
 
     public void closeNotificationBar() {
         try {
-            WebElement dismissButton = waitForElementVisible(notificationDismissButton);
-            dismissButton.click();
+        	WebElement notificationPanelDiv = driver.findElement(notificationPanel);
+        	
+        	if (isElementExists(notificationPanelDiv, By.xpath("(.//button)[1]"))) {
+				WebElement closeButton = notificationPanelDiv.findElement(By.xpath("(.//button)[1]"));
+				clickWebElement(closeButton);
+    		}
         } catch (Exception e) {
-            System.out.println("No notification bar found.");
+            System.out.println("No notification bar found or there is exception.");
         }
     }
     
     public By getPageCheckElement() {
-		return notificationDismissButton;
+		return notificationPanel;
 	}
 }

@@ -14,6 +14,7 @@ public class Person {
 	String location;
 
 	ArrayList<String> phoneNumbers;
+	ArrayList<String> handsetPhoneNumbers;
 	ArrayList<String> links;
 	ArrayList<String> twitters;
 	ArrayList<String> emails;
@@ -23,11 +24,17 @@ public class Person {
 		links = new ArrayList();
 		twitters = new ArrayList();
 		emails = new ArrayList();
+		handsetPhoneNumbers = new ArrayList();
 	}
 
 	public void addPhoneNumber(String phoneNumber) {
 		if (!phoneNumbers.contains(phoneNumber))
 			phoneNumbers.add(phoneNumber);
+	}
+	
+	public void addHandsetPhoneNumber(String phoneNumber) {
+		if (!handsetPhoneNumbers.contains(phoneNumber))
+			handsetPhoneNumbers.add(phoneNumber);
 	}
 	
 	public void addLink(String link) {

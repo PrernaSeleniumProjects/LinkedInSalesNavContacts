@@ -34,6 +34,10 @@ public class LeadsPage extends BasePage {
 
 		for (int i = 0; i < anchorListSize; i++) {
 
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			wait.until(ExpectedConditions
+					.visibilityOfElementLocated(By.xpath("//a[contains(@href, '/sales/lists/people/')]")));
+
 			anchors = driver.findElements(By.xpath("//a[contains(@href, '/sales/lists/people/')]"));
 
 			WebElement anchor = anchors.get(i);
@@ -45,25 +49,24 @@ public class LeadsPage extends BasePage {
 			AppendToFile.appendLineToFile("D:\\Temp\\Files\\" + fileName + ".csv",
 					"Name,Job Title,Company Name,Location,Phone,Website,Social,Emails");
 
-			anchor.click();
-
-			try {
-				Thread.sleep(2000);
-			} catch (Exception ex) {
-			}
+			clickWebElement(anchor);
 
 			boolean isNextButtonEnabled = true;
 
 			while (isNextButtonEnabled) {
 
-				System.out.println("isNextButtonEnabled: " + isNextButtonEnabled);
+				// System.out.println("isNextButtonEnabled: " + isNextButtonEnabled);
+
+				wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+				wait.until(ExpectedConditions
+						.visibilityOfElementLocated(By.xpath("//tr[contains(@class, 'artdeco-models-table-row')]")));
 
 				List<WebElement> rows = driver
 						.findElements(By.xpath("//tr[contains(@class, 'artdeco-models-table-row')]"));
 
 				for (WebElement row : rows) {
-					String rowNum = row.getAttribute("data-x--people-list--row");
-					System.out.println("data-x--people-list--row: " + rowNum);
+					// String rowNum = row.getAttribute("data-x--people-list--row");
+					// System.out.println("data-x--people-list--row: " + rowNum);
 
 					WebElement aNameElement = row.findElement(By.xpath(".//a[@data-anonymize='person-name']"));
 
@@ -75,9 +78,9 @@ public class LeadsPage extends BasePage {
 							getElementTextIfExists(row, By.xpath(".//span[@data-anonymize='company-name']")));
 					person.setLocation(getElementTextIfExists(row, By.xpath(".//td[@data-anonymize='location']")));
 
-					aNameElement.click();
+					clickWebElement(aNameElement);
 
-					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+					wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 					wait.until(ExpectedConditions
 							.visibilityOfElementLocated(By.xpath("//section[@data-sn-view-name='lead-contact-info']")));
 
@@ -95,12 +98,17 @@ public class LeadsPage extends BasePage {
 									.findElement(By.xpath(".//span[@data-anonymize='phone']"));
 							person.addPhoneNumber(phoneElement.getText());
 							checkAndClickShowAll(addressInfo, person);
+						} else if (isElementExists(addressInfo, By.xpath(".//li-icon[@type='phone-handset-icon']"))) {
+							WebElement handsetPhoneNumberElement = addressInfo
+									.findElement(By.xpath(".//span[@data-anonymize='phone']"));
+							person.addHandsetPhoneNumber(handsetPhoneNumberElement.getText());
+							checkAndClickShowAll(addressInfo, person);
 						} else if (isElementExists(addressInfo, By.xpath(".//li-icon[@type='twitter-icon']"))) {
 							WebElement twitterElement = addressInfo
 									.findElement(By.xpath(".//span[@data-anonymize='remove']"));
 							person.addTwitter(twitterElement.getText());
 							checkAndClickShowAll(addressInfo, person);
-						} else if (isElementExists(addressInfo, By.xpath(".//li-icon[@type='link-icon']"))) {
+						}else if (isElementExists(addressInfo, By.xpath(".//li-icon[@type='link-icon']"))) {
 							WebElement linkElement = addressInfo
 									.findElement(By.xpath(".//span[@data-anonymize='remove']"));
 							person.addLink(linkElement.getText());
@@ -130,38 +138,28 @@ public class LeadsPage extends BasePage {
 					WebElement button = driver.findElement(By.xpath("//button[@aria-label='Next']"));
 
 					if (button.isEnabled()) {
-						button.click();
-						try {
-							Thread.sleep(2000);
-						} catch (Exception ex) {
-						}
+						clickWebElement(button);
 					} else {
 						isNextButtonEnabled = false;
-						System.out.println("isNextButtonEnabled: " + isNextButtonEnabled);
+						// System.out.println("isNextButtonEnabled: " + isNextButtonEnabled);
 					}
 
 				} catch (NoSuchElementException e) {
 					isNextButtonEnabled = false;
-					System.out.println("isNextButtonEnabled: " + isNextButtonEnabled);
+					// System.out.println("isNextButtonEnabled: " + isNextButtonEnabled);
 				}
 
 			}
 
 			WebElement backToLeadListsElement = driver.findElement(By.xpath("//a[@href='/sales/lists/people']"));
-			backToLeadListsElement.click();
-
-			try {
-				Thread.sleep(2000);
-			} catch (Exception ex) {
-			}
-
+			clickWebElement(backToLeadListsElement);
 		}
 
 	}
 
 	public void checkAndClickShowAll(WebElement parent, Person person) {
 
-		System.out.println(parent.getAttribute("innerHTML"));
+	//	System.out.println(parent.getAttribute("innerHTML"));
 
 		if (isElementExists(parent, By.xpath(".//button[@type='button']"))) {
 
@@ -171,7 +169,7 @@ public class LeadsPage extends BasePage {
 				WebElement spanShowAll = buttonEle.findElement(By.xpath("(.//span)[1]"));
 
 				if (spanShowAll.getText().contains("Show all")) {
-					spanShowAll.click();
+					clickWebElement(spanShowAll);
 
 					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 					wait.until(ExpectedConditions
@@ -181,7 +179,8 @@ public class LeadsPage extends BasePage {
 
 					WebElement closeModelDialogButton = driver
 							.findElement(By.xpath("//button[@data-test-modal-close-btn='']"));
-					closeModelDialogButton.click();
+
+					clickWebElement(closeModelDialogButton);
 				} else {
 					System.out.println("No show all exists in address");
 				}

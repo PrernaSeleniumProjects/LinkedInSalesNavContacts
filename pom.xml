@@ -78,6 +78,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.3</version> <!-- You can change the version as needed -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

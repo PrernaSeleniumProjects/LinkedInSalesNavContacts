@@ -70,8 +70,12 @@ public class LinkedInTest {
 
 			System.out.println("Step: sales navigator");
 
-			wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(notificationPage.getPageCheckElement()));
+			try {
+				wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(notificationPage.getPageCheckElement()));
+			} catch (Exception ex) {
+
+			}
 
 			Set<String> windowHandles = driver.getWindowHandles();
 
@@ -88,8 +92,8 @@ public class LinkedInTest {
 			// Step 3: Close any notifications
 			notificationPage.closeNotificationBar();
 
-			wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(salesNavPage.getPageCheckElement()));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(salesNavPage.getLeadsPageCheckElement()));
 
 			System.out.println("Step: going to leads");
 

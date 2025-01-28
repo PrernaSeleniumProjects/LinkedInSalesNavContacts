@@ -35,4 +35,8 @@ public class SalesNavPage extends BasePage {
 	public By getPageCheckElement() {
 		return salesNavLink;
 	}
+	
+	public By getLeadsPageCheckElement() {
+		return leadsMenuLink;
+	}
 }
