@@ -17,14 +17,18 @@ import java.util.List;
 
 public class LeadsPage extends BasePage {
 
-	private By leadsTable = By.xpath("//table[contains(@class, 'artdeco-models-table')]//tr");
+	private By leadsTable = By.xpath("//a[contains(@href, '/sales/lists/people/')]");
 
 	public LeadsPage(WebDriver driver) {
 		super(driver);
 	}
 
+	public By getPageCheckElement() {
+		return leadsTable;
+	}
+
 	public void printLeadInfo() {
-		List<WebElement> anchors = driver.findElements(By.xpath("//a[contains(@href, '/sales/lists/people/')]"));
+		List<WebElement> anchors = driver.findElements(leadsTable);
 
 		int anchorListSize = anchors.size();
 
@@ -37,6 +41,9 @@ public class LeadsPage extends BasePage {
 			WebElement fileNameElement = anchor.findElement(By.xpath(".//div[1]"));
 
 			String fileName = fileNameElement.getText();
+
+			AppendToFile.appendLineToFile("D:\\Temp\\Files\\" + fileName + ".csv",
+					"Name,Job Title,Company Name,Location,Phone,Website,Social,Emails");
 
 			anchor.click();
 
@@ -61,10 +68,11 @@ public class LeadsPage extends BasePage {
 					WebElement aNameElement = row.findElement(By.xpath(".//a[@data-anonymize='person-name']"));
 
 					Person person = new Person();
-					person.setPersonName(
-							getElementTextIfExists(row, By.xpath(".//span[@class='_lead-detail-entity-details_ocf42k']")));
+					person.setPersonName(getElementTextIfExists(row,
+							By.xpath(".//span[@class='_lead-detail-entity-details_ocf42k']")));
 					person.setJobTitle(getElementTextIfExists(row, By.xpath(".//div[@data-anonymize='job-title']")));
-					person.setCompanyName(getElementTextIfExists(row, By.xpath(".//span[@data-anonymize='company-name']")));
+					person.setCompanyName(
+							getElementTextIfExists(row, By.xpath(".//span[@data-anonymize='company-name']")));
 					person.setLocation(getElementTextIfExists(row, By.xpath(".//td[@data-anonymize='location']")));
 
 					aNameElement.click();
@@ -115,7 +123,7 @@ public class LeadsPage extends BasePage {
 					}
 
 					AppendToFile.appendLineToFile("D:\\Temp\\Files\\" + fileName + ".csv", person.csvString());
-					System.exit(0);
+					// System.exit(0);
 				}
 
 				try {
@@ -152,13 +160,13 @@ public class LeadsPage extends BasePage {
 	}
 
 	public void checkAndClickShowAll(WebElement parent, Person person) {
-		
+
 		System.out.println(parent.getAttribute("innerHTML"));
 
 		if (isElementExists(parent, By.xpath(".//button[@type='button']"))) {
-			
+
 			WebElement buttonEle = parent.findElement(By.xpath(".//button[@type='button']"));
-			
+
 			if (isElementExists(buttonEle, By.xpath("(.//span)[1]"))) {
 				WebElement spanShowAll = buttonEle.findElement(By.xpath("(.//span)[1]"));
 
@@ -177,10 +185,10 @@ public class LeadsPage extends BasePage {
 				} else {
 					System.out.println("No show all exists in address");
 				}
-			}else {
+			} else {
 				System.out.println("No button exists in address");
 			}
-			
+
 		} else {
 			System.out.println("No button exists in address");
 		}
@@ -188,36 +196,45 @@ public class LeadsPage extends BasePage {
 
 	public void getDetailsFromContactPopup(Person person) {
 
-		List<WebElement> sections = driver.findElements(By.xpath("//section[@class='contact-info-form__phone']"));
+		List<WebElement> sections = driver
+				.findElements(By.xpath("//section[contains(@class,'contact-info-form__phone')]"));
 
 		if (sections.size() > 0) {
 			for (WebElement section : sections) {
 				person.addPhoneNumber(getElementTextIfExists(section, By.xpath(".//a[@data-anonymize='phone']")));
 			}
+		} else {
+			System.out.println("contact-info-form__phone  sections.size() = 0");
 		}
 
-		sections = driver.findElements(By.xpath("//section[@class='contact-info-form__email']"));
+		sections = driver.findElements(By.xpath("//section[contains(@class,'contact-info-form__email')]"));
 
 		if (sections.size() > 0) {
 			for (WebElement section : sections) {
 				person.addEmail(getElementTextIfExists(section, By.xpath(".//a[@data-anonymize='email']")));
 			}
+		} else {
+			System.out.println("contact-info-form__email  sections.size() = 0");
 		}
 
-		sections = driver.findElements(By.xpath("//section[@class='contact-info-form__website']"));
+		sections = driver.findElements(By.xpath("//section[contains(@class,'contact-info-form__website')]"));
 
 		if (sections.size() > 0) {
 			for (WebElement section : sections) {
 				person.addLink(getElementTextIfExists(section, By.xpath(".//a[@data-anonymize='url']")));
 			}
+		} else {
+			System.out.println("contact-info-form__website  sections.size() = 0");
 		}
 
-		sections = driver.findElements(By.xpath("//section[@class='contact-info-form__social']"));
+		sections = driver.findElements(By.xpath("//section[contains(@class,'contact-info-form__social')]"));
 
 		if (sections.size() > 0) {
 			for (WebElement section : sections) {
 				person.addTwitter(getElementTextIfExists(section, By.xpath(".//span[@data-anonymize='person-name']")));
 			}
+		} else {
+			System.out.println("contact-info-form__social sections.size() = 0");
 		}
 	}
 }

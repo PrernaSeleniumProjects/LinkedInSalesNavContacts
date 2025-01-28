@@ -30,4 +30,9 @@ public class SalesNavPage extends BasePage {
 	public void goToLeadsPage() {
 		clickElement(leadsMenuLink);
 	}
+	
+	
+	public By getPageCheckElement() {
+		return salesNavLink;
+	}
 }

@@ -23,4 +23,8 @@ public class NotificationPage extends BasePage {
             System.out.println("No notification bar found.");
         }
     }
+    
+    public By getPageCheckElement() {
+		return notificationDismissButton;
+	}
 }
